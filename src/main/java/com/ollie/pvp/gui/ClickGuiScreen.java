@@ -2,9 +2,11 @@ package com.ollie.pvp.gui;
 
 import com.ollie.pvp.Module;
 import com.ollie.pvp.PvpClient;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class ClickGuiScreen extends Screen {
 
         // panel body
         ctx.fill(px, py, px + PANEL_W, py + PANEL_H, PANEL_BG);
-        ctx.drawBorder(px, py, PANEL_W, PANEL_H, BORDER);
+        drawBorder(ctx, px, py, PANEL_W, PANEL_H, BORDER);
 
         // header gradient
         vGradient(ctx, px + 1, py + 1, px + PANEL_W - 1, py + HEADER_H, HEADER_TOP, HEADER_BOT);
@@ -142,7 +144,11 @@ public class ClickGuiScreen extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mx, double my, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        double mx = click.x();
+        double my = click.y();
+        int button = click.button();
+
         if (button == 0) {
             // category
             int cy = py + HEADER_H + 10;
@@ -164,16 +170,17 @@ public class ClickGuiScreen extends Screen {
                 }
             }
         }
-        return super.mouseClicked(mx, my, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
+        int keyCode = input.key();
         if (keyCode == 256 || keyCode == 344) { // ESC or RIGHT SHIFT
             close();
             return true;
         }
-        return super.keyPressed(keyCode, scanCode, modifiers);
+        return super.keyPressed(input);
     }
 
     @Override
@@ -182,6 +189,13 @@ public class ClickGuiScreen extends Screen {
     }
 
     // ---------- helpers ----------
+
+    private static void drawBorder(DrawContext ctx, int x, int y, int w, int h, int color) {
+        ctx.fill(x, y, x + w, y + 1, color);
+        ctx.fill(x, y + h - 1, x + w, y + h, color);
+        ctx.fill(x, y, x + 1, y + h, color);
+        ctx.fill(x + w - 1, y, x + w, y + h, color);
+    }
 
     private static boolean inRect(int mx, int my, int x, int y, int w, int h) {
         return mx >= x && mx <= x + w && my >= y && my <= y + h;
@@ -235,7 +249,7 @@ public class ClickGuiScreen extends Screen {
             // row bg
             int bg = lerp(PANEL_BG, ROW_HOVER, hover);
             ctx.fill(x, y, x + w, y + h, bg);
-            ctx.drawBorder(x, y, w, h, BORDER);
+            drawBorder(ctx, x, y, w, h, BORDER);
 
             // accent bar (grows with anim)
             int barW = (int) (3 * anim);
