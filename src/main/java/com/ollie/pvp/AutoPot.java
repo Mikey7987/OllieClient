@@ -17,10 +17,10 @@ public class AutoPot extends Module {
 
     @Override
     public void tick(MinecraftClient client) {
-        if (client.player == null) return;
+        if (client.player == null || client.interactionManager == null) return;
         if (delay > 0) { delay--; return; }
 
-        int sel = client.player.getInventory().selectedSlot;
+        int sel = client.player.getInventory().getSelectedSlot();
         ItemStack held = client.player.getInventory().getStack(sel);
         if (held.getItem() instanceof PotionItem && held.getCount() > 0) return;
 
