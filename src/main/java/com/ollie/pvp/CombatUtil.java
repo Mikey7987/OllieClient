@@ -26,7 +26,7 @@ public final class CombatUtil {
                 .filter(e -> !(e instanceof PlayerEntity p) || !p.isCreative())
                 .map(e -> (LivingEntity) e)
                 .filter(e -> eye.distanceTo(e.getEyePos()) <= range)
-                .min(Comparator.comparingDouble(e -> eye.distanceToSquared(e.getEyePos())))
+                .min(Comparator.comparingDouble(e -> eye.squaredDistanceTo(e.getEyePos())))
                 .orElse(null);
     }
 
