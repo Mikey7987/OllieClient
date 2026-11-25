@@ -18,7 +18,7 @@ public class PvpClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-        KeyBinding.Category cat = KeyBinding.Category.register(
+        KeyBinding.Category cat = KeyBinding.Category.create(
                 Identifier.of(MOD_ID, "combat")
         );
 
@@ -30,7 +30,7 @@ public class PvpClient implements ClientModInitializer {
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (guiKey.consumeClick()) {
+            while (guiKey.wasPressed()) {
                 if (!(client.currentScreen instanceof ClickGuiScreen)) {
                     client.setScreen(new ClickGuiScreen());
                 }
