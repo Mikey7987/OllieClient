@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "pvpclient",
+  "version": "${version}",
+  "name": "PvPClient",
+  "description": "Ollie's PvP client.",
+  "authors": [ "ollie" ],
+  "environment": "client",
+  "entrypoints": {
+    "client": [ "com.ollie.pvp.PvpClient" ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": "~1.21.11",
+    "java": ">=21"
+  }
+}
